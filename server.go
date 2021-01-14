@@ -17,6 +17,10 @@ func NewServer(port string) *Server {
 	}
 }
 
+func (s *Server) Handle(path string, handler http.HandlerFunc) {
+	s.router.rules[path] = handler
+}
+
 func (s *Server) Listen() error {
 	fmt.Println("Server listen on port:", s.port)
 	http.Handle("/", s.router)
