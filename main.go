@@ -1,15 +1,13 @@
 package main
 
-type P struct {
-	name string
-}
-
 func main() {
 
 	server := NewServer(":3000")
 
-	server.Handle("/", HandleRoot)
-	server.Handle("/products", HandleProducts)
+	server.Handle("GET", "/", HandleRoot)
+	server.Handle("GET", "/products", server.AddMiddleware(HandleProducts, CheckAuth(), Logging()))
+	server.Handle("POST", "/create", PostRequest)
+	server.Handle("POST", "/users", UserPostRequest)
 
 	server.Listen()
 
